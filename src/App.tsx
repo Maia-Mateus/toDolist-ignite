@@ -33,9 +33,12 @@ export function App() {
       }
     ])
   }
+
+ 
+
   return (
     <>
-      <Header />
+      <Header onAddTask={addTask}/>
       <Tasks 
         tasks={tasks}
       />
