@@ -3,10 +3,11 @@ import { Task } from './Task'
 import styles from './Tasks.module.css'
 
 interface props{
-    tasks: ITask[]
+    tasks: ITask[],
+    onDelete: (taskId:string)=> void
 }
 
-export function Tasks ({tasks}:props){
+export function Tasks ({tasks, onDelete}:props){
     const tasksQuantity = tasks.length;
     const completedTasks = tasks.filter((task) => task.isCompleted).length
 
@@ -27,7 +28,7 @@ export function Tasks ({tasks}:props){
 
             <div className={styles.list}>
                 {tasks.map((task)=> (
-                    <Task key={task.id} task={task}/>    
+                    <Task key={task.id} task={task} onDelete={onDelete}/>    
                 ))}
                 
                 
