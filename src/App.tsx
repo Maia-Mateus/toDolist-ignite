@@ -41,7 +41,7 @@ export function App() {
 
   function toggleTaskCompletedById(taskId:string){  //quando clica no botao, se o id for igual, muda o isCompleted !
     const newTasks = tasks.map((task) => {
-      if(task.id === taskId){
+      if(task.id == taskId){
         return {
           ...task,
           isCompleted: !task.isCompleted,

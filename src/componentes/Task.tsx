@@ -9,15 +9,17 @@ export interface props{
 }
 
 export function Task ({task, onDelete, onComplete}:props){
-    const isCompleted = true;
 
     return (
         <div className={styles.task}>
-            <button className={styles.checkContainer} onClick={() => onComplete}>
-                {isCompleted ? <BsFillCheckCircleFill/> : <div/>}
+            <button 
+                className={styles.checkContainer} 
+                onClick={() => onComplete(task.id)} 
+            >
+                {task.isCompleted ? <BsFillCheckCircleFill /> : <div />}
             </button>
 
-            <p>
+            <p className={task.isCompleted ? styles.textCompleted : ''}>
                 {task.title}
             </p>
 
