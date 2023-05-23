@@ -1,7 +1,9 @@
 import { Header } from './componentes/Header.tsx'
 import { Tasks } from './componentes/Tasks.tsx'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import './styles/global.css'
+
+const LOCAL_STORAGE_KEY = "todo:saved-tasks"
 
 export interface ITask{
   id: string;
@@ -10,21 +12,26 @@ export interface ITask{
 }
 
 export function App() {
-  const[tasks, setTasks] = useState<ITask[]>([
-    {
-      id:"test",
-      title:"test",
-      isCompleted: true
-    },
-    {
-      id:"tksakt",
-      title:"test",
-      isCompleted: false
+  const[tasks, setTasks] = useState<ITask[]>([])
+
+  function loadSavedTasks() {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if(saved){
+      setTasks(JSON.parse(saved))
     }
-  ])
+  }
+
+  useEffect(() => {
+    loadSavedTasks()
+  },[])
+
+  function setTasksAndSave(newTasks: ITask[]){ //pra quando der f5 na página, as tasks não sumirem.
+    setTasks(newTasks)
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks))//stringfy pq o segundo paramentro é string)
+  }
 
   function addTask(taskTitle:string){
-    setTasks([
+    setTasksAndSave([
       ...tasks,
       {
         id: crypto.randomUUID(),
@@ -36,7 +43,7 @@ export function App() {
 
   function deleteTaskById(taskId:string){
     const newTasks = tasks.filter((task) => task.id !== taskId)
-    setTasks(newTasks)
+    setTasksAndSave(newTasks)
   }
 
   function toggleTaskCompletedById(taskId:string){  //quando clica no botao, se o id for igual, muda o isCompleted !
@@ -49,7 +56,7 @@ export function App() {
       }
       return task;
     });
-    setTasks(newTasks);
+    setTasksAndSave(newTasks);
   }
 
   return (
